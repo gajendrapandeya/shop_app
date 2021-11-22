@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shop_app/providers/cart.dart';
 import 'package:shop_app/screens/cart_screen.dart';
+import 'package:shop_app/widgets/app_drawer.dart';
 import 'package:shop_app/widgets/products_grid.dart';
 import '../widgets/badge.dart';
 
@@ -23,6 +24,18 @@ class _ProductsOverviewScreenState extends State<ProductsOverviewScreen> {
         appBar: AppBar(
           title: const Text('Shop App'),
           actions: [
+            Consumer<Cart>(
+              builder: (ctx, cart, ch) => Badge(
+                  child: ch!,
+                  value: cart.itemCount.toString(),
+                  color: Colors.deepOrange),
+              child: IconButton(
+                icon: const Icon(Icons.shopping_cart),
+                onPressed: () {
+                  Navigator.of(context).pushNamed(CartScreen.routeName);
+                },
+              ),
+            ),
             PopupMenuButton(
               onSelected: (FilterOptions selectedValue) {
                 setState(() {
@@ -42,20 +55,9 @@ class _ProductsOverviewScreenState extends State<ProductsOverviewScreen> {
                     child: Text('Show All'), value: FilterOptions.All)
               ],
             ),
-            Consumer<Cart>(
-              builder: (ctx, cart, ch) => Badge(
-                  child: ch!,
-                  value: cart.itemCount.toString(),
-                  color: Colors.deepOrange),
-              child: IconButton(
-                icon: const Icon(Icons.shopping_cart),
-                onPressed: () {
-                  Navigator.of(context).pushNamed(CartScreen.routeName);
-                },
-              ),
-            )
           ],
         ),
+        drawer: const AppDrawer(),
         body: ProductsGrid(_showFavourites));
   }
 }

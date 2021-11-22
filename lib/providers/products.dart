@@ -49,7 +49,6 @@ class Products with ChangeNotifier {
     return _items.firstWhere((prod) => prod.id == id);
   }
 
-
   void addProducts() {
     notifyListeners();
   }
